@@ -115,7 +115,7 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void PlacesAPIInit(){
         // Initialize Places.
-        Places.initialize(getApplicationContext(), "AIzaSyDY9rAyLoSVUHa36_N-0DyHnP5yKWaWCaU");
+        Places.initialize(getApplicationContext(), "APIKEY HERE!!!!!!!!!!!");
 
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(this);
