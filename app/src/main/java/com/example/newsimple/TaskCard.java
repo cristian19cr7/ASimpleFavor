@@ -1,24 +1,26 @@
 package com.example.newsimple;
 
-import com.google.android.gms.tasks.Task;
-
 public class TaskCard {
-    private String TaskDesc;
-    private String TaskHeader;
-    private double TaskAddressLat;
-    private double TaskAddressLong;
-    private String TaskDate;
-    private String TaskStartTime;
-    private String TaskEndTime;
-    private int background;
-    private int TaskBudget;
-    private String TaskEmail, TaskPhone;
+    public String TaskDesc;
+    public String TaskHeader;
+    public double TaskAddressLat;
+    public double TaskAddressLong;
+    public String TaskDate;
+    public String TaskStartTime;
+    public String TaskEndTime;
+    public int background = R.drawable.card_bg;
+    public int TaskBudget;
+    public String TaskEmail, TaskPhone;
 
     public TaskCard(){
-        background = R.drawable.card_bg;
     }
 
-    public TaskCard(String desc, String header, double taskAddressLat, double taskAddressLong, String taskStartTime, String taskEndTime, String taskDate, int bg, int budget, String email, String phone){
+    public TaskCard(String header, String desc, int budget){
+        this.TaskHeader = header;
+        this.TaskDesc = desc;
+        this.TaskBudget = budget;
+    }
+    public TaskCard(String desc, String header, double taskAddressLat, double taskAddressLong, String taskStartTime, String taskEndTime, String taskDate, int budget, String email, String phone){
         TaskDesc = desc;
         TaskHeader = header;
         TaskDate = taskDate;
@@ -26,7 +28,7 @@ public class TaskCard {
         TaskAddressLong = taskAddressLong;
         TaskStartTime = taskStartTime;
         TaskEndTime = taskEndTime;
-        background = R.drawable.card_bg;
+        //background = R.drawable.card_bg;
         TaskBudget = budget;
         TaskEmail = email;
         TaskPhone = phone;
@@ -57,7 +59,7 @@ public class TaskCard {
         return TaskHeader;
     }
 
-    public int getBackground() {
+   public int getBackground() {
         return background;
     }
 
@@ -85,8 +87,8 @@ public class TaskCard {
         this.background = background;
     }
 
-    public void setTaskBudget(int taskBudget) {
-        TaskBudget = taskBudget;
+    public void setTaskBudget(int budget) {
+        TaskBudget = budget;
     }
     public void setTaskAddressLat(double taskAddressLong) {
         TaskAddressLat = taskAddressLong;

@@ -21,6 +21,8 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.util.Arrays;
@@ -34,7 +36,17 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
     public TextView postHeadTV, postDescriptionTV, postDateTimeTV;
     public Button postBtn, postDateBtn;
     boolean timeStartEndFlag = true; // true is startTime false is endTime
+    LatLng placeLocation;
+    FirebaseDatabase database;
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        this.overridePendingTransition(0, 1);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +63,8 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
         postDateTimeTV = findViewById(R.id.postDateTimeTV);
         postPay = findViewById(R.id.postPayout);
         postBtn = findViewById(R.id.postBtnSubmit);
+        database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference().child("Task Posts");
 
         postTime.setFocusable(false);
         postTime.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +101,7 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
             public void onPlaceSelected(Place place) {
                 //Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+                placeLocation = place.getLatLng();
             }
 
             @Override
@@ -108,14 +123,28 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
         postBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 
+                DatabaseReference ref = myRef.push();
+                ref.child("Header").setValue(postHeader.getText().toString());
+                ref.child("Description").setValue(postDescription.getText().toString());
+                ref.child("addressLat").setValue(placeLocation.latitude);
+                ref.child("addressLong").setValue(placeLocation.longitude);
+                ref.child("Date").setValue(postDateBtn.getText().toString());
+                ref.child("startTime").setValue(postTime.getText().toString());
+                ref.child("endTime").setValue(postEndtime.getText().toString());
+                ref.child("budget").setValue(Integer.parseInt(String.valueOf(postPay.getText())));
+                ref.child("Email").setValue("asdfsadf@gmail.com");
+                ref.child("phone").setValue("800 123 4356");
+                startActivity(new Intent(getApplicationContext(), EarnActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+
             }
         });
     }
 
     public void PlacesAPIInit(){
         // Initialize Places.
-        Places.initialize(getApplicationContext(), "APIKEY HERE!!!!!!!!!!!");
+        Places.initialize(getApplicationContext(), "api key here google places");
 
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(this);

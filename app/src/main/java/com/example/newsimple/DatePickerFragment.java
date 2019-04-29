@@ -4,12 +4,9 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.provider.CallLog;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import java.util.Calendar;
 
@@ -21,6 +18,7 @@ public class DatePickerFragment extends DialogFragment {
 
     @NonNull
     @Override
+    @SuppressWarnings("deprecation")
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new DatePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, (DatePickerDialog.OnDateSetListener)getActivity(), year, month, day);
     }
