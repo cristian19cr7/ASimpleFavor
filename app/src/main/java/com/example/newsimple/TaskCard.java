@@ -1,6 +1,8 @@
 package com.example.newsimple;
 
-public class TaskCard {
+import java.io.Serializable;
+
+public class TaskCard implements Serializable {
     public String TaskDesc;
     public String TaskHeader;
     public double TaskAddressLat;

@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,7 +33,7 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
 
     public static final String TAG = "PlaceAutocomplete";
     EditText postTime, postEndtime;
-    public EditText postHeader, postDescription, postPay;
+    public EditText postHeader, postDescription, postPay, postEmail, postPhone;
     public TextView postHeadTV, postDescriptionTV, postDateTimeTV;
     public Button postBtn, postDateBtn;
     boolean timeStartEndFlag = true; // true is startTime false is endTime
@@ -62,10 +63,13 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
         postDateBtn = findViewById(R.id.postDateBtn);
         postDateTimeTV = findViewById(R.id.postDateTimeTV);
         postPay = findViewById(R.id.postPayout);
+        postEmail = findViewById(R.id.postEmail);
+        postPhone = findViewById(R.id.postPhone);
         postBtn = findViewById(R.id.postBtnSubmit);
         database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference().child("Task Posts");
 
+        postDescription.setGravity(0);
         postTime.setFocusable(false);
         postTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,20 +127,24 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
         postBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference ref = myRef.push();
-                ref.child("Header").setValue(postHeader.getText().toString());
-                ref.child("Description").setValue(postDescription.getText().toString());
-                ref.child("addressLat").setValue(placeLocation.latitude);
-                ref.child("addressLong").setValue(placeLocation.longitude);
-                ref.child("Date").setValue(postDateBtn.getText().toString());
-                ref.child("startTime").setValue(postTime.getText().toString());
-                ref.child("endTime").setValue(postEndtime.getText().toString());
-                ref.child("budget").setValue(Integer.parseInt(String.valueOf(postPay.getText())));
-                ref.child("Email").setValue("asdfsadf@gmail.com");
-                ref.child("phone").setValue("800 123 4356");
-                startActivity(new Intent(getApplicationContext(), EarnActivity.class));
-                overridePendingTransition(0, 0);
-                finish();
+                if(isEmailValid(postEmail.getText().toString())){
+                    DatabaseReference ref = myRef.push();
+                    ref.child("Header").setValue(postHeader.getText().toString());
+                    ref.child("Description").setValue(postDescription.getText().toString());
+                    ref.child("addressLat").setValue(placeLocation.latitude);
+                    ref.child("addressLong").setValue(placeLocation.longitude);
+                    ref.child("Date").setValue(postDateBtn.getText().toString());
+                    ref.child("startTime").setValue(postTime.getText().toString());
+                    ref.child("endTime").setValue(postEndtime.getText().toString());
+                    ref.child("budget").setValue(Integer.parseInt(String.valueOf(postPay.getText())));
+                    ref.child("Email").setValue(postEmail.getText().toString());
+                    ref.child("phone").setValue(postPhone.getText().toString());
+                    startActivity(new Intent(getApplicationContext(), EarnActivity.class));
+                    overridePendingTransition(0, 0);
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(),"email is invalid.", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -148,6 +156,10 @@ public class PostActivity extends AppCompatActivity implements DatePickerDialog.
 
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(this);
+    }
+
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     @Override

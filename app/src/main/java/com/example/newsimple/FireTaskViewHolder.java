@@ -6,13 +6,16 @@ import android.view.View;
 import android.widget.TextView;
 
 public class FireTaskViewHolder extends RecyclerView.ViewHolder {
+    View view;
     public TextView headerTV, descTV, budgetTV;
 
     public FireTaskViewHolder(@NonNull View itemView) {
         super(itemView);
-
+        this.view = itemView;
         headerTV = itemView.findViewById(R.id.CardHeaderTV);
         descTV = itemView.findViewById(R.id.CardDescriptionTV);
         budgetTV = itemView.findViewById(R.id.CardBudgetTV);
     }
+
+
 }

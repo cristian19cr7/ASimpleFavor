@@ -18,7 +18,7 @@ public class DatePickerFragment extends DialogFragment {
 
     @NonNull
     @Override
-    @SuppressWarnings("deprecation")
+    //@SuppressWarnings("deprecation")
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new DatePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, (DatePickerDialog.OnDateSetListener)getActivity(), year, month, day);
     }
